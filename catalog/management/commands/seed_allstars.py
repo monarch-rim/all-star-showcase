@@ -225,3 +225,12 @@ class Command(BaseCommand):
         self.stdout.write(
             'Next:  python manage.py createsuperuser   →   then open /admin/'
         )
+        from django.contrib.auth import get_user_model
+User = get_user_model()
+user, _ = User.objects.get_or_create(username='admin', defaults={'email': 'admin@example.com'})
+user.set_password('AdminPass123!')
+user.is_staff = True
+user.is_superuser = True
+user.is_active = True
+user.save()
+self.stdout.write(self.style.SUCCESS("Admin password has been reset to AdminPass123!"))
